@@ -25,10 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masuk - Gacor666</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style> body { font-family: 'Poppins', sans-serif; } </style>
 </head>
-<body class="bg-green-50 font-sans">
+<body class="bg-green-50 flex flex-col min-h-screen font-sans">
     <?php include 'includes/navbar.php'; ?>
 
     <div class="flex justify-center items-center min-h-[80vh]">

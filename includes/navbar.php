@@ -1,3 +1,4 @@
+<!-- NAVBAR COMPONENT -->
 <nav class="bg-white shadow-md sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4">
         <div class="flex justify-between items-center h-16">
