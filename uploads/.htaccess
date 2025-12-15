@@ -1,0 +1,17 @@
+# Proteksi folder uploads
+# Blokir akses ke file PHP, tapi izinkan akses ke gambar
+
+# Blokir file PHP
+<FilesMatch "\.php$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Izinkan akses ke gambar (untuk admin view KYC)
+<FilesMatch "\.(jpg|jpeg|png|gif)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Disable directory browsing
+Options -Indexes

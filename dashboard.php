@@ -33,70 +33,35 @@ $myCampaigns = $stmtCamp->fetchAll();
 
     <?php include 'includes/navbar.php'; ?>
 
-    <main class="container mx-auto px-4 py-10 max-w-6xl flex-grow">
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+    <main class="container mx-auto px-4 py-10 max-w-6xl flex-grow">        <div class="flex flex-col md:flex-row justify-between items-center mb-8">
             <div>
                 <h1 class="text-3xl font-bold text-gray-800">Dashboard Saya</h1>
                 <p class="text-gray-500">Selamat datang, <?= htmlspecialchars($user['nama_lengkap']) ?></p>
             </div>
             
-            <!-- Tombol Aksi Utama -->
-            <?php if ($user['is_verified'] == 1): ?>
-                <a href="create_campaign.php" class="bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 shadow-lg transition flex items-center gap-2">
-                    <span>+</span> Buat Kampanye Baru
-                </a>
-            <?php else: ?>
-                <button disabled class="bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-bold cursor-not-allowed flex items-center gap-2 opacity-70" title="Verifikasi akun dulu">
-                    <span>+</span> Buat Kampanye Baru
-                </button>
-            <?php endif; ?>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Tombol Buat Kampanye (Langsung bisa, tanpa verifikasi user) -->
+            <a href="create_campaign.php" class="bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 shadow-lg transition flex items-center gap-2">
+                <span>+</span> Buat Kampanye Baru
+            </a>
+        </div>        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <!-- KIRI: Status Akun & Profil -->
+            <!-- KIRI: Data Diri User -->
             <div class="lg:col-span-1 space-y-6">
-                <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-                    <h3 class="font-bold text-lg mb-4 border-b pb-2">Status Verifikasi</h3>
-                    
-                    <?php if ($user['is_verified'] == 1): ?>
-                        <div class="bg-green-100 text-green-800 p-4 rounded-lg text-center border border-green-200">
-                            <div class="text-4xl mb-2">✅</div>
-                            <h4 class="font-bold">Akun Terverifikasi</h4>
-                            <p class="text-sm mt-1">Anda dapat membuat penggalangan dana.</p>
-                        </div>
-
-                    <?php elseif ($user['verification_status'] == 'pending'): ?>
-                        <div class="bg-yellow-100 text-yellow-800 p-4 rounded-lg text-center border border-yellow-200">
-                            <div class="text-4xl mb-2">⏳</div>
-                            <h4 class="font-bold">Menunggu Verifikasi</h4>
-                            <p class="text-sm mt-1">Data sedang ditinjau Admin (1x24 Jam).</p>
-                        </div>
-
-                    <?php elseif ($user['verification_status'] == 'rejected'): ?>
-                        <div class="bg-red-100 text-red-800 p-4 rounded-lg text-center border border-red-200 mb-4">
-                            <div class="text-4xl mb-2">❌</div>
-                            <h4 class="font-bold">Verifikasi Ditolak</h4>
-                            <p class="text-sm mt-1">Data tidak valid.</p>
-                        </div>
-                        <a href="kyc_form.php" class="block w-full bg-blue-600 text-white text-center py-2 rounded hover:bg-blue-700 font-semibold">Ajukan Ulang</a>
-
-                    <?php else: ?>
-                        <div class="bg-gray-100 text-gray-600 p-4 rounded-lg text-center border border-gray-200 mb-4">
-                            <div class="text-4xl mb-2">⚠️</div>
-                            <h4 class="font-bold">Belum Terverifikasi</h4>
-                            <p class="text-sm mt-1">Wajib upload KTP & KK.</p>
-                        </div>
-                        <a href="kyc_form.php" class="block w-full bg-blue-600 text-white text-center py-2 rounded hover:bg-blue-700 font-semibold">Verifikasi Sekarang</a>
-                    <?php endif; ?>
-                </div>
-
                 <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
                     <h3 class="font-bold text-lg mb-4 border-b pb-2">Data Diri</h3>
                     <ul class="space-y-3 text-sm">
+                        <li><span class="text-gray-500 block">Nama</span><span class="font-medium"><?= htmlspecialchars($user['nama_lengkap']) ?></span></li>
                         <li><span class="text-gray-500 block">Email</span><span class="font-medium"><?= htmlspecialchars($user['email']) ?></span></li>
                         <li><span class="text-gray-500 block">No HP</span><span class="font-medium"><?= htmlspecialchars($user['no_hp']) ?></span></li>
                     </ul>
+                </div>
+                
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <h4 class="font-bold text-blue-800 mb-2">ℹ️ Info Penting</h4>
+                    <p class="text-sm text-blue-700">
+                        Setiap kampanye yang Anda buat harus dilengkapi dengan dokumen verifikasi (KYC). 
+                        Admin akan mereview kampanye dalam 1x24 jam.
+                    </p>
                 </div>
             </div>
 
@@ -106,41 +71,63 @@ $myCampaigns = $stmtCamp->fetchAll();
                     <h3 class="font-bold text-lg mb-6 border-b pb-2">Kampanye Saya</h3>
 
                     <?php if (count($myCampaigns) > 0): ?>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="bg-gray-50 text-gray-600 text-sm">
-                                        <th class="p-3 rounded-l-lg">Judul</th>
-                                        <th class="p-3">Terkumpul</th>
-                                        <th class="p-3">Status</th>
-                                        <th class="p-3 rounded-r-lg text-right">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-sm">
-                                    <?php foreach ($myCampaigns as $mc): ?>
-                                    <tr class="border-b last:border-0 hover:bg-gray-50 transition">
-                                        <td class="p-3 font-medium text-gray-800 max-w-[200px] truncate"><?= htmlspecialchars($mc['judul']) ?></td>
-                                        <td class="p-3 text-green-600 font-bold">Rp <?= number_format($mc['dana_terkumpul']) ?></td>
-                                        <td class="p-3">
-                                            <span class="px-2 py-1 rounded text-xs font-bold 
-                                                <?= $mc['status'] == 'active' ? 'bg-green-100 text-green-700' : 
-                                                   ($mc['status'] == 'pending' ? 'bg-yellow-100 text-yellow-700' : 
-                                                   ($mc['status'] == 'rejected' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700')) ?>">
-                                                <?= strtoupper($mc['status']) ?>
-                                            </span>
-                                        </td>
-                                        <td class="p-3 text-right">
-                                            <a href="detail.php?id=<?= $mc['id'] ?>" class="text-blue-600 hover:underline">Lihat</a>
-                                        </td>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
+                        <div class="space-y-4">
+                            <?php foreach ($myCampaigns as $mc): 
+                                $statusColors = [
+                                    'pending' => 'bg-yellow-100 text-yellow-800',
+                                    'active' => 'bg-green-100 text-green-800',
+                                    'rejected' => 'bg-red-100 text-red-800',
+                                    'completed' => 'bg-purple-100 text-purple-800'
+                                ];
+                                $statusColor = $statusColors[$mc['status']] ?? 'bg-gray-100 text-gray-800';
+                                $persen = ($mc['target_donasi'] > 0) ? ($mc['dana_terkumpul'] / $mc['target_donasi']) * 100 : 0;
+                            ?>
+                            <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50">
+                                <div class="flex justify-between items-start mb-3">
+                                    <div class="flex-grow">
+                                        <h4 class="font-bold text-gray-800"><?= htmlspecialchars($mc['judul']) ?></h4>
+                                        <p class="text-xs text-gray-500 mt-1">Dibuat: <?= date('d M Y', strtotime($mc['created_at'])) ?></p>
+                                    </div>
+                                    <span class="px-3 py-1 rounded-full text-xs font-semibold <?= $statusColor ?>">
+                                        <?= ucfirst($mc['status']) ?>
+                                    </span>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600">Terkumpul: <strong class="text-green-600">Rp <?= number_format($mc['dana_terkumpul']) ?></strong></span>
+                                        <span class="text-gray-600">Target: Rp <?= number_format($mc['target_donasi']) ?></span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: <?= min($persen, 100) ?>%"></div>
+                                    </div>
+                                </div>                                <?php if ($mc['status'] === 'rejected' && !empty($mc['admin_notes'])): ?>
+                                <div class="mt-3 p-3 bg-red-50 border border-red-200 rounded text-sm text-red-800">
+                                    <strong>Alasan ditolak:</strong> <?= htmlspecialchars($mc['admin_notes']) ?>
+                                </div>
+                                <?php endif; ?>
+                                
+                                <!-- Tombol Hapus Kampanye -->
+                                <?php if ($mc['dana_terkumpul'] == 0): ?>
+                                <div class="mt-3 flex justify-end">
+                                    <a href="delete_campaign.php?id=<?= $mc['id'] ?>" 
+                                       class="bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700 transition"
+                                       onclick="return confirm('Yakin ingin menghapus kampanye \'<?= htmlspecialchars($mc['judul']) ?>\'?')">
+                                        🗑️ Hapus Kampanye
+                                    </a>
+                                </div>
+                                <?php else: ?>
+                                <div class="mt-3 text-xs text-gray-500 text-right">
+                                    ℹ️ Kampanye tidak bisa dihapus karena sudah ada donasi
+                                </div>
+                                <?php endif; ?>
+                            </div>
+                            <?php endforeach; ?>
                         </div>
                     <?php else: ?>
                         <div class="text-center py-10">
                             <span class="text-5xl block mb-3">📂</span>
-                            <p class="text-gray-500">Anda belum membuat kampanye.</p>
+                            <p class="text-gray-500 mb-4">Anda belum membuat kampanye.</p>
+                            <a href="create_campaign.php" class="bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 inline-block">Buat Kampanye Pertama</a>
                         </div>
                     <?php endif; ?>
                 </div>

@@ -82,6 +82,9 @@ CREATE TABLE `users` (
   `role` enum('admin','user') DEFAULT 'user',
   `is_verified` tinyint(1) DEFAULT 0,
   `ktp_file` varchar(255) DEFAULT NULL,
+  `kk_file` varchar(255) DEFAULT NULL,
+  `surat_polisi_file` varchar(255) DEFAULT NULL,
+  `foto_diri_file` varchar(255) DEFAULT NULL,
   `verification_status` enum('none','pending','approved','rejected') DEFAULT 'none',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

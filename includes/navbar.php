@@ -5,14 +5,13 @@
             <a href="index.php" class="flex items-center gap-2">
                 <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">G</div>
                 <span class="text-2xl font-bold text-green-600">Gacor666</span>
-            </a>
-            <div class="flex items-center space-x-6">
+            </a>            <div class="flex items-center space-x-6">
                 <a href="index.php" class="hover:text-green-600 font-medium text-gray-600">Beranda</a>
                 
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="dashboard.php" class="hover:text-green-600 font-medium text-gray-600">Dashboard</a>
                     <?php if ($_SESSION['role'] === 'admin'): ?>
-                        <a href="admin.php" class="text-red-500 font-bold">Admin Panel</a>
+                        <a href="admin%20Gacor666/index.php" class="text-red-500 font-bold hover:text-red-700">Admin Panel</a>
                     <?php endif; ?>
                     <span class="text-sm text-gray-400 hidden md:inline">Hi, <?= htmlspecialchars($_SESSION['nama']) ?></span>
                     <a href="logout.php" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-200 text-sm font-bold">Logout</a>
