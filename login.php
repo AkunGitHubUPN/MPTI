@@ -52,11 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition">Masuk</button>
             </form>
             
-            <div class="mt-4 bg-blue-50 p-3 rounded text-sm text-blue-800">
-                <p class="font-bold">Akun Demo:</p>
-                <p>User: user@gacor.com / password123</p>
-                <p>Admin: admin@gacor.com / password123</p>
-            </div>
 
             <p class="text-center mt-4 text-sm text-gray-600">Belum punya akun? <a href="register.php" class="text-green-600 font-bold hover:underline">Daftar disini</a></p>
         </div>

@@ -8,15 +8,16 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     redirect('../login.php');
 }
 
-$campaignId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-
-if ($campaignId <= 0) {
+// Validasi ID
+if (!isset($_GET['id'])) {
     flash('error', 'ID kampanye tidak valid!');
     redirect('campaigns.php');
 }
 
-// Cek apakah kampanye ada
-$stmt = $pdo->prepare("SELECT id, judul, dana_terkumpul FROM campaigns WHERE id = ?");
+$campaignId = (int)$_GET['id'];
+
+// Ambil data kampanye
+$stmt = $pdo->prepare("SELECT * FROM campaigns WHERE id = ?");
 $stmt->execute([$campaignId]);
 $campaign = $stmt->fetch();
 
@@ -25,33 +26,34 @@ if (!$campaign) {
     redirect('campaigns.php');
 }
 
-// Cek apakah sudah ada donasi
+// Cek apakah ada donasi
 if ($campaign['dana_terkumpul'] > 0) {
-    flash('error', 'Tidak bisa menghapus kampanye yang sudah menerima donasi!');
+    flash('error', 'Tidak bisa menghapus kampanye yang sudah ada donasi!');
     redirect('campaigns.php');
 }
 
-try {
-    // Hapus kampanye
-    $stmt = $pdo->prepare("DELETE FROM campaigns WHERE id = ?");
-    $stmt->execute([$campaignId]);
-    
-    flash('success', 'Kampanye "' . htmlspecialchars($campaign['judul']) . '" berhasil dihapus!');
-    redirect('campaigns.php');
-    
-} catch (PDOException $e) {
-    flash('error', 'Gagal menghapus kampanye: ' . $e->getMessage());
-    redirect('campaigns.php');
+// Hapus file gambar dan KYC jika ada
+$filesToDelete = [
+    $campaign['gambar_url'],
+    $campaign['ktp_file'],
+    $campaign['kk_file'],
+    $campaign['surat_polisi_file'],
+    $campaign['foto_diri_file']
+];
+
+foreach ($filesToDelete as $file) {
+    if ($file && file_exists("../uploads/" . $file)) {
+        unlink("../uploads/" . $file);
+    }
 }
+
+// Hapus kampanye dari database
+$stmt = $pdo->prepare("DELETE FROM campaigns WHERE id = ?");
+if ($stmt->execute([$campaignId])) {
+    flash('success', 'Kampanye berhasil dihapus!');
+} else {
+    flash('error', 'Gagal menghapus kampanye!');
+}
+
+redirect('campaigns.php');
 ?>
-    
-} catch (PDOException $e) {
-    flash('error', 'Gagal menghapus kampanye: ' . $e->getMessage());
-    redirect('campaigns.php');
-}
-?>
-    
-} catch (PDOException $e) {
-    flash('error', 'Gagal menghapus kampanye: ' . $e->getMessage());
-    redirect('campaigns.php');
-}

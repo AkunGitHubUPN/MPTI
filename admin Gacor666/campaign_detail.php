@@ -10,9 +10,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 
 $campaignId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-// Ambil detail kampanye
+// Ambil detail kampanye dengan info user
 $stmt = $pdo->prepare("
-    SELECT c.*, u.nama_lengkap, u.email, u.no_hp
+    SELECT c.*, u.nama_lengkap, u.email, u.no_hp, u.created_at as user_created_at
     FROM campaigns c 
     JOIN users u ON c.user_id = u.id 
     WHERE c.id = ?
@@ -228,6 +228,10 @@ $persen = ($campaign['target_donasi'] > 0) ? ($campaign['dana_terkumpul'] / $cam
                         <div>
                             <span class="text-sm text-gray-500">No HP</span>
                             <div class="text-gray-800"><?= htmlspecialchars($campaign['no_hp'] ?? '-') ?></div>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-500">Terdaftar Sejak</span>
+                            <div class="text-gray-800"><?= date('d M Y', strtotime($campaign['user_created_at'])) ?></div>
                         </div>
                         <div>
                             <span class="text-sm text-gray-500">Status Verifikasi</span>
