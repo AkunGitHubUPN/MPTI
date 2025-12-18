@@ -29,17 +29,18 @@ CREATE TABLE IF NOT EXISTS `campaigns` (
   `dana_terkumpul` decimal(15,2) DEFAULT '0.00',
   `batas_waktu` date NOT NULL,
   `gambar_url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'default.jpg',
+  `rejection_reason` text COLLATE utf8mb4_general_ci,
   `ktp_file` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `kk_file` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `surat_polisi_file` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `foto_diri_file` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `rejection_reason` text COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `admin_notes` text COLLATE utf8mb4_general_ci,
   `status` enum('pending','active','rejected','completed') COLLATE utf8mb4_general_ci DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `campaigns_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
@@ -58,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `donations` (
   PRIMARY KEY (`id`),
   KEY `campaign_id` (`campaign_id`),
   CONSTRAINT `donations_ibfk_1` FOREIGN KEY (`campaign_id`) REFERENCES `campaigns` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
