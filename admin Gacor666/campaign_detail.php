@@ -12,7 +12,11 @@ $campaignId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 // Ambil detail kampanye dengan info user
 $stmt = $pdo->prepare("
-    SELECT c.*, u.nama_lengkap, u.email, u.no_hp, u.created_at as user_created_at
+    SELECT c.*, 
+           u.nama_lengkap, 
+           u.email, 
+           u.no_hp, 
+           u.created_at as user_created_at
     FROM campaigns c 
     JOIN users u ON c.user_id = u.id 
     WHERE c.id = ?
@@ -28,20 +32,20 @@ if (!$campaign) {
 // HANDLE APPROVE/REJECT
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
-    $adminNotes = trim($_POST['admin_notes'] ?? '');
+    $rejectionReason = trim($_POST['rejection_reason'] ?? '');
     
     if ($action === 'approve') {
-        $stmt = $pdo->prepare("UPDATE campaigns SET status = 'active', admin_notes = NULL WHERE id = ?");
+        $stmt = $pdo->prepare("UPDATE campaigns SET status = 'active', rejection_reason = NULL WHERE id = ?");
         $stmt->execute([$campaignId]);
         flash('success', 'Kampanye berhasil disetujui dan sekarang aktif!');
         redirect('campaign_detail.php?id=' . $campaignId);
         
     } elseif ($action === 'reject') {
-        if (empty($adminNotes)) {
+        if (empty($rejectionReason)) {
             flash('error', 'Alasan penolakan wajib diisi!');
         } else {
-            $stmt = $pdo->prepare("UPDATE campaigns SET status = 'rejected', admin_notes = ? WHERE id = ?");
-            $stmt->execute([$adminNotes, $campaignId]);
+            $stmt = $pdo->prepare("UPDATE campaigns SET status = 'rejected', rejection_reason = ? WHERE id = ?");
+            $stmt->execute([$rejectionReason, $campaignId]);
             flash('success', 'Kampanye ditolak. User akan melihat alasan penolakan.');
             redirect('campaign_detail.php?id=' . $campaignId);
         }
@@ -137,13 +141,12 @@ $persen = ($campaign['target_donasi'] > 0) ? ($campaign['dana_terkumpul'] / $cam
                     <h2 class="text-xl font-bold text-gray-800 mb-4">Dokumen Verifikasi (KYC)</h2>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        
-                        <!-- KTP -->
+                          <!-- KTP -->
                         <div class="border rounded-lg p-4">
                             <h3 class="font-bold text-gray-700 mb-3 text-sm">1. Foto KTP</h3>
                             <?php if (!empty($campaign['ktp_file'])): ?>
-                                <a href="../../uploads/<?= htmlspecialchars($campaign['ktp_file']) ?>" target="_blank">
-                                    <img src="../../uploads/<?= htmlspecialchars($campaign['ktp_file']) ?>" 
+                                <a href="../uploads/<?= htmlspecialchars($campaign['ktp_file']) ?>" target="_blank">
+                                    <img src="../uploads/<?= htmlspecialchars($campaign['ktp_file']) ?>" 
                                          alt="KTP" 
                                          class="w-full h-40 object-cover rounded border hover:opacity-75 transition cursor-pointer">
                                 </a>
@@ -159,8 +162,8 @@ $persen = ($campaign['target_donasi'] > 0) ? ($campaign['dana_terkumpul'] / $cam
                         <div class="border rounded-lg p-4">
                             <h3 class="font-bold text-gray-700 mb-3 text-sm">2. Foto Kartu Keluarga</h3>
                             <?php if (!empty($campaign['kk_file'])): ?>
-                                <a href="../../uploads/<?= htmlspecialchars($campaign['kk_file']) ?>" target="_blank">
-                                    <img src="../../uploads/<?= htmlspecialchars($campaign['kk_file']) ?>" 
+                                <a href="../uploads/<?= htmlspecialchars($campaign['kk_file']) ?>" target="_blank">
+                                    <img src="../uploads/<?= htmlspecialchars($campaign['kk_file']) ?>" 
                                          alt="KK" 
                                          class="w-full h-40 object-cover rounded border hover:opacity-75 transition cursor-pointer">
                                 </a>
@@ -176,8 +179,8 @@ $persen = ($campaign['target_donasi'] > 0) ? ($campaign['dana_terkumpul'] / $cam
                         <div class="border rounded-lg p-4">
                             <h3 class="font-bold text-gray-700 mb-3 text-sm">3. Surat Pengantar</h3>
                             <?php if (!empty($campaign['surat_polisi_file'])): ?>
-                                <a href="../../uploads/<?= htmlspecialchars($campaign['surat_polisi_file']) ?>" target="_blank">
-                                    <img src="../../uploads/<?= htmlspecialchars($campaign['surat_polisi_file']) ?>" 
+                                <a href="../uploads/<?= htmlspecialchars($campaign['surat_polisi_file']) ?>" target="_blank">
+                                    <img src="../uploads/<?= htmlspecialchars($campaign['surat_polisi_file']) ?>" 
                                          alt="Surat" 
                                          class="w-full h-40 object-cover rounded border hover:opacity-75 transition cursor-pointer">
                                 </a>
@@ -193,8 +196,8 @@ $persen = ($campaign['target_donasi'] > 0) ? ($campaign['dana_terkumpul'] / $cam
                         <div class="border rounded-lg p-4">
                             <h3 class="font-bold text-gray-700 mb-3 text-sm">4. Foto Selfie + KTP</h3>
                             <?php if (!empty($campaign['foto_diri_file'])): ?>
-                                <a href="../../uploads/<?= htmlspecialchars($campaign['foto_diri_file']) ?>" target="_blank">
-                                    <img src="../../uploads/<?= htmlspecialchars($campaign['foto_diri_file']) ?>" 
+                                <a href="../uploads/<?= htmlspecialchars($campaign['foto_diri_file']) ?>" target="_blank">
+                                    <img src="../uploads/<?= htmlspecialchars($campaign['foto_diri_file']) ?>" 
                                          alt="Selfie" 
                                          class="w-full h-40 object-cover rounded border hover:opacity-75 transition cursor-pointer">
                                 </a>
@@ -228,20 +231,9 @@ $persen = ($campaign['target_donasi'] > 0) ? ($campaign['dana_terkumpul'] / $cam
                         <div>
                             <span class="text-sm text-gray-500">No HP</span>
                             <div class="text-gray-800"><?= htmlspecialchars($campaign['no_hp'] ?? '-') ?></div>
-                        </div>
-                        <div>
+                        </div>                        <div>
                             <span class="text-sm text-gray-500">Terdaftar Sejak</span>
                             <div class="text-gray-800"><?= date('d M Y', strtotime($campaign['user_created_at'])) ?></div>
-                        </div>
-                        <div>
-                            <span class="text-sm text-gray-500">Status Verifikasi</span>
-                            <div>
-                                <?php if ($campaign['is_verified']): ?>
-                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-semibold">✓ Terverifikasi</span>
-                                <?php else: ?>
-                                    <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-semibold">✗ Belum Verifikasi</span>
-                                <?php endif; ?>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -256,10 +248,9 @@ $persen = ($campaign['target_donasi'] > 0) ? ($campaign['dana_terkumpul'] / $cam
                                 onclick="return confirm('Setujui kampanye ini? Kampanye akan muncul di homepage.')">
                             ✓ Setujui Kampanye
                         </button>
-                        
-                        <div class="border-t pt-3">
+                          <div class="border-t pt-3">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Alasan Penolakan (jika reject):</label>
-                            <textarea name="admin_notes" rows="3" 
+                            <textarea name="rejection_reason" rows="3" 
                                       placeholder="Contoh: Deskripsi tidak jelas, dokumen KTP tidak valid..."
                                       class="w-full border border-gray-300 p-2 rounded text-sm focus:ring-2 focus:ring-red-500 outline-none"></textarea>
                         </div>
@@ -270,16 +261,15 @@ $persen = ($campaign['target_donasi'] > 0) ? ($campaign['dana_terkumpul'] / $cam
                             ✗ Tolak Kampanye
                         </button>
                     </form>
-                </div>
-                <?php else: ?>
+                </div>                <?php else: ?>
                 <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
                     <p class="text-sm text-blue-800">
                         <strong>Info:</strong> Kampanye ini sudah diproses dengan status: <strong><?= ucfirst($campaign['status']) ?></strong>
                     </p>
-                    <?php if (!empty($campaign['admin_notes'])): ?>
+                    <?php if (!empty($campaign['rejection_reason'])): ?>
                     <div class="mt-3 p-3 bg-red-50 border border-red-200 rounded">
-                        <p class="text-xs font-bold text-red-800">Catatan Admin:</p>
-                        <p class="text-sm text-red-700 mt-1"><?= htmlspecialchars($campaign['admin_notes']) ?></p>
+                        <p class="text-xs font-bold text-red-800">Alasan Penolakan:</p>
+                        <p class="text-sm text-red-700 mt-1"><?= htmlspecialchars($campaign['rejection_reason']) ?></p>
                     </div>
                     <?php endif; ?>
                 </div>

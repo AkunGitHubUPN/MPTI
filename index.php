@@ -74,9 +74,8 @@ $campaigns = $stmt->fetchAll();
                             </div>
                             <div class="text-right text-xs text-gray-400">Target: Rp <?= number_format($c['target_donasi']) ?></div>
                         </div>
-                        
-                        <div class="mt-6 pt-4 border-t border-gray-100">
-                            <a href="#" class="block text-center w-full bg-green-50 text-green-700 py-3 rounded-lg hover:bg-green-600 hover:text-white transition font-bold">Donasi Sekarang</a>
+                          <div class="mt-6 pt-4 border-t border-gray-100">
+                            <a href="campaign_detail.php?id=<?= $c['id'] ?>" class="block text-center w-full bg-green-50 text-green-700 py-3 rounded-lg hover:bg-green-600 hover:text-white transition font-bold">Lihat Detail</a>
                         </div>
                     </div>
                 </div>

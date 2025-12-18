@@ -14,8 +14,8 @@ $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
 $stmt->execute([$uid]);
 $user = $stmt->fetch();
 
-// 2. Ambil Daftar Kampanye Saya
-$stmtCamp = $pdo->prepare("SELECT * FROM campaigns WHERE user_id = ? ORDER BY created_at DESC");
+// 2. Ambil 3 Kampanye Terbaru Saya
+$stmtCamp = $pdo->prepare("SELECT * FROM campaigns WHERE user_id = ? ORDER BY created_at DESC LIMIT 3");
 $stmtCamp->execute([$uid]);
 $myCampaigns = $stmtCamp->fetchAll();
 ?>
@@ -63,12 +63,12 @@ $myCampaigns = $stmtCamp->fetchAll();
                         Admin akan mereview kampanye dalam 1x24 jam.
                     </p>
                 </div>
-            </div>
-
-            <!-- KANAN: Daftar Kampanye -->
-            <div class="lg:col-span-2">
-                <div class="bg-white p-6 rounded-xl shadow border border-gray-100 min-h-[400px]">
-                    <h3 class="font-bold text-lg mb-6 border-b pb-2">Kampanye Saya</h3>
+            </div>            <!-- KANAN: Daftar Kampanye -->
+            <div class="lg:col-span-2">                <div class="bg-white p-6 rounded-xl shadow border border-gray-100 min-h-[400px]">
+                    <div class="flex justify-between items-center mb-6 border-b pb-2">
+                        <h3 class="font-bold text-lg">Kampanye Terbaru Saya</h3>
+                        <a href="my_campaigns.php" class="text-green-600 hover:text-green-700 text-sm font-semibold">Lihat Semua →</a>
+                    </div>
 
                     <?php if (count($myCampaigns) > 0): ?>
                         <div class="space-y-4">
@@ -102,24 +102,19 @@ $myCampaigns = $stmtCamp->fetchAll();
                                     </div>
                                 </div>                                <?php if ($mc['status'] === 'rejected' && !empty($mc['admin_notes'])): ?>
                                 <div class="mt-3 p-3 bg-red-50 border border-red-200 rounded text-sm text-red-800">
-                                    <strong>Alasan ditolak:</strong> <?= htmlspecialchars($mc['admin_notes']) ?>
-                                </div>
+                                    <strong>Alasan ditolak:</strong> <?= htmlspecialchars($mc['admin_notes']) ?>                                </div>
                                 <?php endif; ?>
                                 
-                                <!-- Tombol Hapus Kampanye -->
-                                <?php if ($mc['dana_terkumpul'] == 0): ?>
-                                <div class="mt-3 flex justify-end">
+                                <!-- Tombol Lihat Detail -->
+                                <div class="mt-3 flex justify-end gap-2">
+                                    <?php if ($mc['dana_terkumpul'] == 0): ?>
                                     <a href="delete_campaign.php?id=<?= $mc['id'] ?>" 
                                        class="bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700 transition"
                                        onclick="return confirm('Yakin ingin menghapus kampanye \'<?= htmlspecialchars($mc['judul']) ?>\'?')">
-                                        🗑️ Hapus Kampanye
+                                        🗑️ Hapus
                                     </a>
+                                    <?php endif; ?>
                                 </div>
-                                <?php else: ?>
-                                <div class="mt-3 text-xs text-gray-500 text-right">
-                                    ℹ️ Kampanye tidak bisa dihapus karena sudah ada donasi
-                                </div>
-                                <?php endif; ?>
                             </div>
                             <?php endforeach; ?>
                         </div>

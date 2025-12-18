@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {    // Ambil data kampanye
 
     <main class="container mx-auto px-4 py-10 max-w-4xl flex-grow">
         <div class="mb-6">
-            <a href="dashboard.php" class="text-blue-600 hover:text-blue-800 text-sm">← Kembali ke Dashboard</a>
+            <a href="dashboard.php" class="text-green-600 hover:text-green-800 text-sm">← Kembali ke Dashboard</a>
         </div>
 
         <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-green-600">
@@ -168,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {    // Ambil data kampanye
                 <!-- SECTION 2: DOKUMEN VERIFIKASI (KYC) -->
                 <div class="border-b pb-8">
                     <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <span class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
+                        <span class="bg-green-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
                         Dokumen Verifikasi (KYC)
                     </h2>
                     <p class="text-sm text-gray-600 mb-6">
@@ -189,7 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {    // Ambil data kampanye
                         <div class="border border-gray-200 rounded-lg p-4">
                             <label class="block font-bold text-gray-700 mb-2"><?= $label ?> <span class="text-red-500">*</span></label>
                             <input type="file" name="<?= $name ?>" required accept=".jpg,.jpeg,.png" 
-                                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-gray-300 rounded-lg cursor-pointer p-2">
+                                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-blue-100 border border-gray-300 rounded-lg cursor-pointer p-2">
                             <p class="text-xs text-gray-500 mt-1">Format: JPG/PNG, Maksimal 2MB</p>
                         </div>
                         <?php endforeach; ?>

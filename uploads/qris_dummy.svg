@@ -1,0 +1,64 @@
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="300" fill="white"/>
+  
+  <!-- QR Code Pattern -->
+  <!-- Top Left Corner -->
+  <rect x="20" y="20" width="80" height="80" fill="black"/>
+  <rect x="30" y="30" width="60" height="60" fill="white"/>
+  <rect x="40" y="40" width="40" height="40" fill="black"/>
+  
+  <!-- Top Right Corner -->
+  <rect x="200" y="20" width="80" height="80" fill="black"/>
+  <rect x="210" y="30" width="60" height="60" fill="white"/>
+  <rect x="220" y="40" width="40" height="40" fill="black"/>
+  
+  <!-- Bottom Left Corner -->
+  <rect x="20" y="200" width="80" height="80" fill="black"/>
+  <rect x="30" y="210" width="60" height="60" fill="white"/>
+  <rect x="40" y="220" width="40" height="40" fill="black"/>
+  
+  <!-- Data Patterns -->
+  <rect x="120" y="20" width="20" height="20" fill="black"/>
+  <rect x="150" y="20" width="20" height="20" fill="black"/>
+  <rect x="120" y="50" width="20" height="20" fill="black"/>
+  <rect x="180" y="50" width="20" height="20" fill="black"/>
+  
+  <rect x="20" y="120" width="20" height="20" fill="black"/>
+  <rect x="50" y="120" width="20" height="20" fill="black"/>
+  <rect x="80" y="120" width="20" height="20" fill="black"/>
+  
+  <rect x="120" y="80" width="60" height="20" fill="black"/>
+  <rect x="120" y="120" width="20" height="60" fill="black"/>
+  <rect x="160" y="120" width="20" height="60" fill="black"/>
+  
+  <rect x="200" y="120" width="20" height="20" fill="black"/>
+  <rect x="230" y="120" width="20" height="20" fill="black"/>
+  <rect x="260" y="120" width="20" height="20" fill="black"/>
+  
+  <rect x="120" y="200" width="20" height="20" fill="black"/>
+  <rect x="150" y="200" width="20" height="20" fill="black"/>
+  <rect x="180" y="200" width="20" height="20" fill="black"/>
+  
+  <rect x="120" y="230" width="20" height="20" fill="black"/>
+  <rect x="180" y="230" width="20" height="20" fill="black"/>
+  <rect x="120" y="260" width="20" height="20" fill="black"/>
+  <rect x="150" y="260" width="20" height="20" fill="black"/>
+  
+  <rect x="200" y="200" width="20" height="20" fill="black"/>
+  <rect x="230" y="200" width="20" height="20" fill="black"/>
+  <rect x="260" y="200" width="20" height="20" fill="black"/>
+  <rect x="200" y="230" width="20" height="20" fill="black"/>
+  <rect x="260" y="230" width="20" height="20" fill="black"/>
+  <rect x="200" y="260" width="20" height="20" fill="black"/>
+  <rect x="230" y="260" width="20" height="20" fill="black"/>
+  <rect x="260" y="260" width="20" height="20" fill="black"/>
+  
+  <!-- Center pattern -->
+  <rect x="130" y="130" width="40" height="40" fill="black"/>
+  <rect x="135" y="135" width="30" height="30" fill="white"/>
+  <rect x="145" y="145" width="10" height="10" fill="black"/>
+  
+  <!-- QRIS Text -->
+  <text x="150" y="290" font-size="24" font-weight="bold" fill="#00AA13" text-anchor="middle" font-family="Arial">QRIS</text>
+</svg>

@@ -7,6 +7,7 @@
                 <span class="text-2xl font-bold text-green-600">Gacor666</span>
             </a>            <div class="flex items-center space-x-6">
                 <a href="index.php" class="hover:text-green-600 font-medium text-gray-600">Beranda</a>
+                <a href="campaigns.php" class="hover:text-green-600 font-medium text-gray-600">Kampanye</a>
                 
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="dashboard.php" class="hover:text-green-600 font-medium text-gray-600">Dashboard</a>
