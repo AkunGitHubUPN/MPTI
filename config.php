@@ -24,7 +24,7 @@ try {
 // 3. Helper Functions
 function base_url($path = '') {
     // Sesuaikan folder projek Anda, misal: /gacor666/
-    $projectDir = '/gacor666'; 
+    $projectDir = '/MPTI'; 
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
     return "$protocol://{$_SERVER['HTTP_HOST']}$projectDir/" . $path;
 }
